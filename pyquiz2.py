@@ -3,7 +3,7 @@ import pygame.gfxdraw
 import sys
 import time
 import random
-from textwidget import Text
+from textwidget import Label
 
 
 pygame.init()
@@ -95,11 +95,13 @@ class Button(pygame.sprite.Sprite):
 
     def hover(self):
         ''' checks if the mouse is over the button and changes the color if it is true '''
-        if self.style == 1:
-            self.check_collision()
-            self.render()
-        else:
-            self.check_collision()
+        # if self.style == 1:
+        #     self.check_collision()
+        #     # self.render()
+        #     # buttons.draw()
+
+        # else:
+        self.check_collision()
 
     def click(self):
         ''' checks if you click on the button and makes the call to the action just one time'''
@@ -108,6 +110,7 @@ class Button(pygame.sprite.Sprite):
                 print("The answer is:'" + self.text + "'")
                 self.command()
                 self.pressed = 0
+                time.sleep(1)
             if pygame.mouse.get_pressed() == (0,0,0):
                 self.pressed = 1
 
@@ -128,7 +131,7 @@ def on_save():
 
 def on_right():
     global points
-    
+
     print("Right")
     points += 1
     score.change_text(str(points))
@@ -205,10 +208,13 @@ def question(qnum):
         hover_colors="blue on orange", style=2, borderc=(255,255,0),
         command=on_false)
 
+    Button((50, 350), "PYQUIZ BY GiovanniPython", 20, "white on black",
+            hover_colors="blue on orange", style=2, borderc=(100,0,0),
+            command=None)
 # ======================= this code is just for example, start the program from the main file
 # in the main folder, I mean, you can also use this file only, but I prefer from the main file
 # 29.8.2021
-score = Text(screen, "Punteggio", 100, 300)
+score = Label(screen, "Punteggio", 100, 300)
 points = 0
 qnum = 1
 if __name__ == '__main__':

@@ -2,12 +2,9 @@ import pygame
 import random
 
 
-
-
-
 pygame.init()
 font = pygame.font.SysFont("Arial", 20)
-class Text:
+class Label:
 	''' CLASS FOR TEXT LABELS ON THE WIN SCREEN SURFACE '''
 	def __init__(self, screen, text, x, y, color="white"):
 		self.image = font.render(text, 1, color)
@@ -31,7 +28,7 @@ if __name__ == '__main__':
 	# TEXT TO SHOW ON THE SCREEN AT POS 100 100
 	win = pygame.display.set_mode((600, 600))
 	clock = pygame.time.Clock()
-	score = Text(win, "Ciao a tutti", 100, 100)
+	score = Label(win, "Ciao a tutti", 100, 100)
 
 	# LOOP TO MAKE THINGS ON THE SCRREEN
 	loop = 1
