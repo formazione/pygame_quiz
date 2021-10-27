@@ -127,8 +127,11 @@ def on_save():
     print("This is Save")
 
 def on_right():
+    global points
+    
     print("Right")
-    score.change_text("100")
+    points += 1
+    score.change_text(str(points))
     forward()
 
 def on_false():
@@ -206,6 +209,7 @@ def question(qnum):
 # in the main folder, I mean, you can also use this file only, but I prefer from the main file
 # 29.8.2021
 score = Text(screen, "Punteggio", 100, 300)
+points = 0
 qnum = 1
 if __name__ == '__main__':
     pygame.init()
