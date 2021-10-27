@@ -3,7 +3,7 @@ import pygame.gfxdraw
 import sys
 import time
 import random
-from textwidget import Label
+from widgets import Label
 
 
 pygame.init()
