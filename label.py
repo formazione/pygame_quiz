@@ -1,24 +1,41 @@
+
 import pygame
-import random
+
 
 
 pygame.init()
-font = pygame.font.SysFont("Arial", 20)
+def fontsize(size):
+	font = pygame.font.SysFont("Arial", size)
+	return font
+
+font_default = fontsize(20)
+
+
+labels = []
 class Label:
+
 	''' CLASS FOR TEXT LABELS ON THE WIN SCREEN SURFACE '''
-	def __init__(self, screen, text, x, y, color="white"):
-		self.image = font.render(text, 1, color)
+	def __init__(self, screen, text, x, y, size=20, color="white"):
+		if size != 20:
+			self.font = fontsize(size)
+		else:
+			self.font = font_default
+		self.image = self.font.render(text, 1, color)
 		_, _, w, h = self.image.get_rect()
 		self.rect = pygame.Rect(x, y, w, h)
 		self.screen = screen
+		labels.append(self)
 
-	def change_text(self, newtext):
-		self.image = font.render(newtext, 1, "white")
+	def change_text(self, newtext, color="white"):
+		self.image = self.font.render(newtext, 1, color)
 
 	def draw(self):
 		self.screen.blit(self.image, (self.rect))
 
 
+def show_labels():
+	for _ in labels:
+		_.draw()
 
 
 '''     when you import this module
@@ -30,7 +47,10 @@ if __name__ == '__main__':
 	# TEXT TO SHOW ON THE SCREEN AT POS 100 100
 	win = pygame.display.set_mode((600, 600))
 	clock = pygame.time.Clock()
-	score = Label(win, "Ciao a tutti", 100, 100)
+
+
+	Label(win, "Hello World", 100, 100, 36)
+	Label(win, "GiovanniPython", 100, 200, 24, color="yellow")
 
 	# LOOP TO MAKE THINGS ON THE SCRREEN
 	loop = 1
@@ -44,7 +64,7 @@ if __name__ == '__main__':
 				if event.key == pygame.K_ESCAPE:
 					loop = 0
 		# CODE TO SHOW TEXT EVERY FRAME
-		score.draw()
+		show_labels()
 		pygame.display.update()
 		clock.tick(60)
 

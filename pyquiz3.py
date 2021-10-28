@@ -3,10 +3,12 @@ import pygame.gfxdraw
 import sys
 import time
 import random
-from widgets import Label
+from label import *
 
 
 pygame.init()
+pygame.mixer.init()
+hit = pygame.mixer.Sound("sounds/hit.wav")
 screen = pygame.display.set_mode((600, 400))
 clock = pygame.time.Clock()
 buttons = pygame.sprite.Group()
@@ -138,17 +140,18 @@ def on_false():
 def forward(answered="wrong"):
     global qnum, points
     
+    hit.play()
     print(f"{qnum=}")
     print(f"{len(questions)}")
     if qnum < len(questions):
         if answered == "right":
             points += 1
-        else:
-            points -= 1
         time.sleep(.1)
-        score.change_text(str(points))
         qnum += 1
         question(qnum)
+    score.change_text(str(points))
+    title.change_text(questions[qnum-1][0], color="cyan")
+    num_question.change_text(str(qnum))
 
 
 
@@ -168,13 +171,11 @@ def question(qnum):
     pos = [100, 150, 200, 250]
     random.shuffle(pos)
     # this is a label, a button with no border does nothing: command = None
-    Button((0, 0), str(qnum-1), 20, "white on black",
-        hover_colors="blue on orange", style=2, borderc=(0,0,0),
-        command=None)
 
-    Button((10, 10), questions[qnum-1][0], 55, "white on black",
-        hover_colors="blue on orange", style=2, borderc=(0,0,0),
-        command=None)
+   # the question showed with a button
+    # Button((0, 10), questions[qnum-1][0], 12, "white on black",
+    #     hover_colors="blue on orange", style=2, borderc=(0,0,0),
+    #     command=None)
 
     # ______------_____ BUTTONS FOR ANSWERS _____------______ #
 
@@ -195,7 +196,6 @@ def question(qnum):
         hover_colors="blue on orange", style=2, borderc=(255,255,0),
         command=on_right)
 
-
     Button((50, pos[1]), questions[qnum-1][1][1], 36, "red on yellow",
         hover_colors="blue on orange", style=2, borderc=(255,255,0),
         command=on_false)
@@ -214,17 +214,16 @@ def question(qnum):
 # ======================= this code is just for example, start the program from the main file
 # in the main folder, I mean, you can also use this file only, but I prefer from the main file
 # 29.8.2021
-score = Label(screen, "Punteggio", 100, 300)
-points = 0
 qnum = 1
+score = Label(screen, "Punteggio", 100, 300)
+num_question = Label(screen, str(qnum), 0, 0)
+title = Label(screen, questions[qnum-1][0], 10, 10, 55, color="cyan")
+points = 0
 if __name__ == '__main__':
     pygame.init()
     game_on = 0
     def loop():
         # BUTTONS ISTANCES
-        global qnum
-
-
         game_on = 1
         question(qnum)
         while True:
@@ -244,7 +243,7 @@ if __name__ == '__main__':
                 pygame.quit()
                 sys.exit()
             buttons.draw(screen)
-            score.draw()
+            show_labels()
             clock.tick(60)
             pygame.display.update()
         pygame.quit()
