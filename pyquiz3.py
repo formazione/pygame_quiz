@@ -140,10 +140,10 @@ def on_false():
 def forward(answered="wrong"):
     global qnum, points
     
-    hit.play()
-    print(f"{qnum=}")
-    print(f"{len(questions)}")
     if qnum < len(questions):
+        hit.play()
+        print(f"{qnum=}")
+        print(f"{len(questions)}")
         if answered == "right":
             points += 1
         time.sleep(.1)
