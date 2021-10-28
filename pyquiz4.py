@@ -175,10 +175,17 @@ def question(qnum):
     random.shuffle(pos)
     # this is a label, a button with no border does nothing: command = None
 
-   # the question showed with a button
-    # Button((0, 10), questions[qnum-1][0], 12, "white on black",
-    #     hover_colors="blue on orange", style=2, borderc=(0,0,0),
-    #     command=None)
+    # the question showed with a button // You can alternativeli use the Label to show
+    # the question
+    # Button(
+    #   (0, 10),                    # position 
+    #   questions[qnum-1][0],       # text to show
+    #   12,                         # size of text
+    #   "white on black",           # color fg on bg
+    #   hover_colors="blue on orange",  # color when hover
+    #   style="button2",                # there are two types of buttons
+    #   borderc=(0,0,0),                # choose the border color
+    #   command=None)                   # If none it's a Text with no action
 
     # ______------_____ BUTTONS FOR ANSWERS _____------______ #
 
@@ -194,26 +201,21 @@ def question(qnum):
     Button((10, 250), "4. ", 36, "red on yellow",
         hover_colors="blue on orange", style="button2", borderc=(255,255,0),
         command=None)
-
     Button((50, pos[0]), questions[qnum-1][1][0], 36, "red on yellow",
         hover_colors="blue on orange", style="button2", borderc=(255,255,0),
         command=on_right)
-
     Button((50, pos[1]), questions[qnum-1][1][1], 36, "red on yellow",
         hover_colors="blue on orange", style="button2", borderc=(255,255,0),
         command=on_false)
-
     Button((50, pos[2]), questions[qnum-1][1][2], 36, "red on yellow",
         hover_colors="blue on orange", style="button2", borderc=(255,255,0),
         command=on_false)
-
     Button((50, pos[3]), questions[qnum-1][1][3], 36, "red on yellow",
         hover_colors="blue on orange", style="button2", borderc=(255,255,0),
         command=on_false)
-
-    Button((50, 350), "PYQUIZ BY GiovanniPython", 20, "white on black",
-            hover_colors="blue on orange", style="button2", borderc=(100,0,0),
-            command=None)
+    # Button((50, 350), "PYQUIZ BY GiovanniPython", 20, "white on black",
+    #         hover_colors="blue on orange", style="button2", borderc=(100,0,0),
+    #         command=None)
 # ======================= this code is just for example, start the program from the main file
 # in the main folder, I mean, you can also use this file only, but I prefer from the main file
 # 29.8.2021
@@ -223,9 +225,10 @@ def kill():
         _.kill()
 
 qnum = 1
-score = Label(screen, "Punteggio", 100, 300)
+score = Label(screen, "Punteggio", 50, 300)
 num_question = Label(screen, str(qnum), 0, 0)
 title = Label(screen, questions[qnum-1][0], 10, 10, 55, color="cyan")
+write1 = Label(screen, "PYQUIZ BY GiovanniPython", 50, 350, 20, color="red")
 points = 0
 if __name__ == '__main__':
     pygame.init()
