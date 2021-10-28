@@ -138,6 +138,7 @@ def on_false():
     forward()
 
 def forward(answered="wrong"):
+    ''' here we check if the answer is right '''
     global qnum, points
     
     if qnum < len(questions):
@@ -150,6 +151,7 @@ def forward(answered="wrong"):
         qnum += 1
         question(qnum)
     else:
+        # when it's over it deletes the buttons
         time.sleep(1)
         kill()
     score.change_text(str(points))
@@ -168,9 +170,11 @@ questions = [
 def question(qnum):
     ''' put your buttons here '''
 
-    for _ in buttons:
-        _.kill()
+    # Kills the previous buttons/sprites
+    kill()
 
+    time.sleep(1)
+    
     pos = [100, 150, 200, 250]
     random.shuffle(pos)
     # this is a label, a button with no border does nothing: command = None
