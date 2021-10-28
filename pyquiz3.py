@@ -149,6 +149,9 @@ def forward(answered="wrong"):
         time.sleep(.1)
         qnum += 1
         question(qnum)
+    else:
+        time.sleep(1)
+        kill()
     score.change_text(str(points))
     title.change_text(questions[qnum-1][0], color="cyan")
     num_question.change_text(str(qnum))
@@ -165,8 +168,8 @@ questions = [
 def question(qnum):
     ''' put your buttons here '''
 
-    for sprites in buttons:
-        sprites.kill()
+    for _ in buttons:
+        _.kill()
 
     pos = [100, 150, 200, 250]
     random.shuffle(pos)
@@ -214,6 +217,11 @@ def question(qnum):
 # ======================= this code is just for example, start the program from the main file
 # in the main folder, I mean, you can also use this file only, but I prefer from the main file
 # 29.8.2021
+
+def kill():
+    for _ in buttons:
+        _.kill()
+
 qnum = 1
 score = Label(screen, "Punteggio", 100, 300)
 num_question = Label(screen, str(qnum), 0, 0)
@@ -242,7 +250,6 @@ if __name__ == '__main__':
             else:
                 pygame.quit()
                 sys.exit()
-            buttons.draw(screen)
             show_labels()
             clock.tick(60)
             pygame.display.update()
