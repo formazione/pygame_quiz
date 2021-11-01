@@ -132,32 +132,42 @@ def on_save():
     print("This is Save")
 
 def on_right():
-    forward("right")
+    check_score("right")
 
 def on_false():
-    forward()
+    ''' if there is no 'right' as arg it means it's false '''
+    check_score()
 
-def forward(answered="wrong"):
+def check_score(answered="wrong"):
     ''' here we check if the answer is right '''
     global qnum, points
     
+    # until there are questions (before last)
     if qnum < len(questions):
-        hit.play()
-        print(f"{qnum=}")
-        print(f"{len(questions)}")
+        print(qnum, len(questions))
+        hit.play() # click sound
         if answered == "right":
+            time.sleep(.1) # to avoid adding more point when pressing too much
             points += 1
-        time.sleep(.1)
-        qnum += 1
-        question(qnum)
-    else:
-        # when it's over it deletes the buttons
-        time.sleep(1)
-        kill()
-    score.change_text(str(points))
-    title.change_text(questions[qnum-1][0], color="cyan")
-    num_question.change_text(str(qnum))
-
+            # Show the score text
+            qnum += 1 # counter for next question in the list
+            score.change_text(str(points))
+            # Change the text of the question
+            title.change_text(questions[qnum-1][0], color="cyan")
+            # change the question number
+            num_question.change_text(str(qnum))
+            show_question(qnum) # delete old buttons and show new
+    # for the last question...
+    elif qnum == len(questions):
+        print(qnum, len(questions))
+        hit.play() # click sound
+        if answered == "right":
+            time.sleep(.1)
+            points +=1
+            score.change_text("You reached a score of " + str(points))
+            time.sleep(1)
+            kill()
+            start_again()
 
 
 questions = [
@@ -167,33 +177,19 @@ questions = [
 ]
 
 
-def question(qnum):
+
+
+def show_question(qnum):
     ''' put your buttons here '''
 
     # Kills the previous buttons/sprites
     kill()
 
-    time.sleep(1)
     
+    # The 4 position of the buttons
     pos = [100, 150, 200, 250]
+    # randomized, so that the right one is not on top
     random.shuffle(pos)
-    # this is a label, a button with no border does nothing: command = None
-
-    # the question showed with a button // You can alternativeli use the Label to show
-    # the question
-    # Button(
-    #   (0, 10),                    # position 
-    #   questions[qnum-1][0],       # text to show
-    #   12,                         # size of text
-    #   "white on black",           # color fg on bg
-    #   hover_colors="blue on orange",  # color when hover
-    #   style="button2",                # there are two types of buttons
-    #   borderc=(0,0,0),                # choose the border color
-    #   command=None)                   # If none it's a Text with no action
-
-    # ______------_____ BUTTONS FOR ANSWERS _____------______ #
-
-    # =============== NUMBERS ===================
 
     Button((10, 100), "1. ", 36, "red on yellow",
         hover_colors="blue on orange", style="button2", borderc=(255,255,0),
@@ -209,7 +205,7 @@ def question(qnum):
         command=None)
 
 
-    # ============== TEXT ====================
+    # ============== TEXT: question and answers ====================
     Button((50, pos[0]), questions[qnum-1][1][0], 36, "red on yellow",
         hover_colors="blue on orange", style="button2", borderc=(255,255,0),
         command=on_right)
@@ -222,52 +218,44 @@ def question(qnum):
     Button((50, pos[3]), questions[qnum-1][1][3], 36, "red on yellow",
         hover_colors="blue on orange", style="button2", borderc=(255,255,0),
         command=on_false)
-    # Button((50, 350), "PYQUIZ BY GiovanniPython", 20, "white on black",
-    #         hover_colors="blue on orange", style="button2", borderc=(100,0,0),
-    #         command=None)
-# ======================= this code is just for example, start the program from the main file
-# in the main folder, I mean, you can also use this file only, but I prefer from the main file
-# 29.8.2021
+
 
 def kill():
     for _ in buttons:
         _.kill()
 
 qnum = 1
-score = Label(screen, "Punteggio", 50, 300)
+points = 0
+# ================= SOME LABELS ==========================
 num_question = Label(screen, str(qnum), 0, 0)
+score = Label(screen, "Punteggio", 50, 300)
 title = Label(screen, questions[qnum-1][0], 10, 10, 55, color="cyan")
 write1 = Label(screen, "PYQUIZ BY GiovanniPython", 50, 350, 20, color="red")
-points = 0
+
+def start_again():
+    pass
+
+def loop():
+    global game_on
+
+    show_question(qnum)
+
+    while True:
+        screen.fill(0)
+        for event in pygame.event.get(): # ====== quit / exit
+            if (event.type == pygame.QUIT):
+                pygame.quit()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    pygame.quit()
+        buttons.update() #                     update buttons
+        buttons.draw(screen)
+        show_labels()        #                 update labels
+        clock.tick(60)
+        pygame.display.update()
+    pygame.quit()
+
 if __name__ == '__main__':
     pygame.init()
-    game_on = 0
-    def loop():
-        # BUTTONS ISTANCES
-        game_on = 1
-        question(qnum)
-        while True:
-            screen.fill(0)
-            for event in pygame.event.get():
-                if (event.type == pygame.QUIT):
-                    game_on = 0
-                    pygame.quit()
-                if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_ESCAPE:
-                        pygame.quit()
-                        game_on = 0
-            if game_on:
-                buttons.update()
-                buttons.draw(screen)
-            else:
-                pygame.quit()
-                sys.exit()
-            show_labels()
-            clock.tick(60)
-            pygame.display.update()
-        pygame.quit()
-
-
-
-
+    game_on = 1
     loop()
