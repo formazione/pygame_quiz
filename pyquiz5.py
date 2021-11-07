@@ -12,9 +12,8 @@ pygame.mixer.init()
 hit = pygame.mixer.Sound("sounds/hit.wav")
 screen = pygame.display.set_mode((600, 400))
 clock = pygame.time.Clock()
-buttons = pygame.sprite.Group()
-num = 1
 
+buttons = pygame.sprite.Group()
 class Button(pygame.sprite.Sprite):
     ''' A button treated like a Sprite... and killed too '''
     
@@ -163,7 +162,6 @@ def check_score(answered="wrong"):
             points +=1
         score.change_text("You reached a score of " + str(points))
     time.sleep(.5)
-
 
 
 
