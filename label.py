@@ -24,10 +24,15 @@ class Label:
 		_, _, w, h = self.image.get_rect()
 		self.rect = pygame.Rect(x, y, w, h)
 		self.screen = screen
+		self.text = text
 		labels.append(self)
 
 	def change_text(self, newtext, color="white"):
 		self.image = self.font.render(newtext, 1, color)
+
+	def change_font(self, font, size, color="white"):
+		self.font = pygame.font.SysFont(font, size)
+		self.change_text(self.text, color)
 
 	def draw(self):
 		self.screen.blit(self.image, (self.rect))
@@ -50,8 +55,8 @@ if __name__ == '__main__':
 
 
 	Label(win, "Hello World", 100, 100, 36)
-	Label(win, "GiovanniPython", 100, 200, 24, color="yellow")
-
+	second = Label(win, "GiovanniPython", 100, 200, 24, color="yellow")
+	second.change_font("Arial", 40, "yellow")
 	# LOOP TO MAKE THINGS ON THE SCRREEN
 	loop = 1
 	while loop:

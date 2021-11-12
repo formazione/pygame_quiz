@@ -11,9 +11,13 @@ class Label:
 		_, _, w, h = self.image.get_rect()
 		self.rect = pygame.Rect(x, y, w, h)
 		self.screen = screen
+		self.font = font
 
 	def change_text(self, newtext):
 		self.image = font.render(newtext, 1, "white")
+
+	def change_font(self, font, size):
+		self.font = pygame.font.SysFont(font, size)
 
 	def draw(self):
 		self.screen.blit(self.image, (self.rect))
